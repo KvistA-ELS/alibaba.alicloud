@@ -222,22 +222,25 @@ def add_set_backend_servers(module, slb, load_balancer_id, backend_servers):
 
         # Verifying if server load balancer Object is present
         if load_balancer_info:
-            existing_backend_servers = str(load_balancer_info.backend_servers['backend_server'])
+            existing_backend_servers = load_balancer_info.backend_servers['backend_server']
 
             # Segregating existing backend servers from new backend servers from the provided backend servers
             for backend_server in backend_servers:
-
-                backend_server_string = backend_server[server_id_param] + '\''
-                if backend_server_string in existing_backend_servers:
-                    backend_servers_to_set.append(backend_server)
-                else:
+                found = False
+                for existing_backend_server in existing_backend_servers:
+                    if existing_backend_server['server_id'] == backend_server['server_id']:
+                        found = True
+                        if not existing_backend_server['weight'] == backend_server['weight']:
+                            # only append server to backend_servers_to_set if weight has changed
+                            backend_servers_to_set.append(backend_server)
+                if not found:
                     backend_servers_to_add.append(backend_server)
 
-                    # Adding new backend servers if provided
+            # Adding new backend servers if provided
             if len(backend_servers_to_add) > 0:
                 current_backend_servers.extend(slb.add_backend_servers(load_balancer_id=load_balancer_id, backend_servers=backend_servers_to_add))
                 changed = True
-                # Setting exisiting backend servers if provided
+            # Setting exisiting backend servers if changed
             if len(backend_servers_to_set) > 0:
                 backen_servers = slb.set_backend_servers(load_balancer_id=load_balancer_id, backend_servers=backend_servers_to_set)
                 changed = True

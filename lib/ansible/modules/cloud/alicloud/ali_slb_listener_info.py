@@ -82,7 +82,7 @@ listener:
         "listener_port": 8085,
         "listener_type": null,
         "persistence_timeout": null,
-        "schedule": null,
+        "scheduler": null,
         "server_certificate_id": null,
         "status": "stopped",
         "sticky_session": "off"
@@ -112,7 +112,7 @@ def get_info(obj):
                   backend_server_port=obj.backend_server_port,
                   bandwidth=obj.bandwidth,
                   status=obj.status,
-                  schedule=obj.schedule,
+                  scheduler=obj.scheduler,
                   listener_type=obj.listener_type)
 
     if hasattr(obj, 'server_certificate_id'):

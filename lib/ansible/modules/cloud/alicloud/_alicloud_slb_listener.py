@@ -301,7 +301,7 @@ listener:
         "backend_server_port": 80,
         "bandwidth": 4,
         "listener_port": 80,
-        "schedule": null,
+        "scheduler": null,
         "server_certificate_id": null,
         "status": "running",
         "sticky_session": "off",
@@ -335,7 +335,7 @@ def get_info(obj):
                   backend_server_port=obj.backend_server_port,
                   bandwidth=obj.bandwidth,
                   status=obj.status,
-                  schedule=obj.schedule)
+                  scheduler=obj.scheduler)
 
     if hasattr(obj, 'server_certificate_id'):
         result['server_certificate_id'] = obj.server_certificate_id
